@@ -2,3 +2,18 @@ es:
  port: 9200
  host: 127.0.0.1
  scheme: http
+spring:
+  datasource:
+   hikari:
+     master:
+      driverClassName: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/mptest?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      username: root
+      password: 123456
+     slave:
+      driverClassName: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3307/mptest?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      username: root
+      password: 123456
+
+
