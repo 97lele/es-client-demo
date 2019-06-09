@@ -1,14 +1,14 @@
 package com.gdut.imis.esclientdemo.web;
 
-import com.gdut.imis.esclientdemo.dao.UserMapper;
+import com.gdut.imis.esclientdemo.dao.UserDao;
 import com.gdut.imis.esclientdemo.entity.User;
+import com.gdut.imis.esclientdemo.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Wrapper;
 import java.util.List;
 
 /**
@@ -18,7 +18,9 @@ import java.util.List;
 @RestController
 public class UserController {
     @Autowired
-    private UserMapper userMapper;
+    private UserDao userDao;
+    @Autowired
+    private IUserService userService;
     @PostMapping("/user/insert")
     public String insert(@RequestParam("name")String name,@RequestParam("age")Integer age,@RequestParam("email")String email,@RequestParam("id")Long id){
         User u=new User();
@@ -26,11 +28,15 @@ public class UserController {
         u.setName(name);
         u.setAge(age);
         u.setEmail(email);
-return userMapper.insert(u)+"";
+return userDao.insert(u)+"";
     }
+
+
 
     @GetMapping("/user/get")
     public List<User> get(){
-      return   userMapper.selectList(null);
+
+        userService.getBaseMapper();
+        return   userDao.getUserForTestMapperLocation();
     }
 }

@@ -79,7 +79,7 @@ public class MyBatisPlusConfig {
         LazyConnectionDataSourceProxy p=new LazyConnectionDataSourceProxy();
         p.setTargetDataSource(dataSource(master(),slave()));
         sqlSessionFactory.setDataSource(p);
-        //需要mapper文件时加入扫描，sqlSessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mapper/*/*Mapper.xml"));
+        //需要mapper文件并且不在同一个包下时加入扫描，sqlSessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mapper/*/*Mapper.xml"));
         MybatisConfiguration configuration = new MybatisConfiguration();
         configuration.setJdbcTypeForNull(JdbcType.NULL);
         configuration.setMapUnderscoreToCamelCase(true);
