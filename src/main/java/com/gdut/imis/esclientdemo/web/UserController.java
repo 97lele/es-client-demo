@@ -1,5 +1,6 @@
 package com.gdut.imis.esclientdemo.web;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.gdut.imis.esclientdemo.dao.UserDao;
 import com.gdut.imis.esclientdemo.entity.User;
 import com.gdut.imis.esclientdemo.service.IUserService;
@@ -21,13 +22,14 @@ public class UserController {
     private UserDao userDao;
     @Autowired
     private IUserService userService;
-    @PostMapping("/user/insert")
+    @GetMapping("/user/insert")
     public String insert(@RequestParam("name")String name,@RequestParam("age")Integer age,@RequestParam("email")String email,@RequestParam("id")Long id){
         User u=new User();
         u.setId(id);
         u.setName(name);
         u.setAge(age);
         u.setEmail(email);
+
 return userDao.insert(u)+"";
     }
 
@@ -36,7 +38,6 @@ return userDao.insert(u)+"";
     @GetMapping("/user/get")
     public List<User> get(){
 
-        userService.getBaseMapper();
         return   userDao.getUserForTestMapperLocation();
     }
 }

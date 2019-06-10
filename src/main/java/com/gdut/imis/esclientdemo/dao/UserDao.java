@@ -15,4 +15,5 @@ import java.util.List;
  */
 public interface UserDao extends BaseMapper<User> {
 List<User> getUserForTestMapperLocation();
+void test();
 }

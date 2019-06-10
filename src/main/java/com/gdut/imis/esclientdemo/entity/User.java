@@ -18,4 +18,14 @@ public class User {
     @TableField("age")
     private Integer age;
     private String email;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

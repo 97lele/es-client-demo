@@ -5,5 +5,8 @@
     <select id="getUserForTestMapperLocation" resultType="com.gdut.imis.esclientdemo.entity.User">
         select * from user limit 2;
     </select>
+    <select id="test">
+        select 1;
+    </select>
 
 </mapper>

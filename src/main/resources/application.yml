@@ -15,5 +15,3 @@ spring:
       jdbc-url: jdbc:mysql://localhost:3307/mptest?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
       username: root
       password: 123456
-
-
