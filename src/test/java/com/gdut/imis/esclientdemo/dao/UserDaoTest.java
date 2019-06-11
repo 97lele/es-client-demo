@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.api.R;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gdut.imis.esclientdemo.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,15 +35,53 @@ public class UserDaoTest {
     private UserDao userDao;
     @Test
     public void test(){
-        userDao.getUserForTestMapperLocation().forEach(System.out::println);
-        userDao.selectList(null).forEach(System.out::println);
+
+        userDao.findFreash(Wrappers.query().gt("u.age",19).eq("r.id",1)).forEach(System.out::println);
+        userDao.testSqlSelect(Wrappers.query().select("name","age").like("email","qq")).forEach(System.out::println);
+        userDao.testSqlSet(Wrappers.update().set("set role_id ",2).eq("user_id",1));
+//        userDao.testSqlSelect().forEach(System.out::println);
+    }
+
+    @Test
+    public void delete(){
+       User u=new User();
+       u.setId(11L);
+       u.setAge(11);
+       u.setName("qc");
+       u.setEmail("101@gg.com");
+       u.insert();
+       u.update(Wrappers.<User>update().set("email","qc@gg.com").eq("id",11L));
+        System.out.println(u.selectById(11L));
+
+       u.delete(Wrappers.<User>lambdaQuery().eq(User::getName,"qc"));
+
+
+    }
+    @Test
+    public void update(){
+      /*  userDao.update();
+        userDao.updateById();*/
+    }
+
+    @Test
+    public void testPage(){
+        IPage<User> page=new Page(1,2,false);
+        QueryWrapper<User> wrapper=new QueryWrapper();
+/*userDao.selectPage(page,wrapper).getRecords().forEach(System.out::println);
+        System.out.println(page.getTotal()+"--"+page.getPages());
+userDao.selectMapsPage(page,wrapper).getRecords().forEach(System.out::println);*/
+userDao.findAll(Wrappers.query().eq("r.id",2)).forEach(System.out::println);
+        userDao.findWithPage(Wrappers.query().eq("r.id",2),new Page(1,2)).forEach(System.out::println);
+
     }
 
     @Test
     public void getUserForTestMapperLocation() throws Exception {
-
-        QueryWrapper<User> wrapper=new QueryWrapper();
-wrapper.notExists("SELECT * FROM USER u WHERE EXISTS( SELECT *  FROM USER  uu WHERE uu.age < 30 AND u.age=uu.`age` AND u.age=user.age)");
+User u=new User();
+u.setName("l");
+u.setAge(20);
+        QueryWrapper<User> wrapper=new QueryWrapper(u);
+//wrapper.notExists("SELECT * FROM USER u WHERE EXISTS( SELECT *  FROM USER  uu WHERE uu.age < 30 AND u.age=uu.`age` AND u.age=user.age)");
 //
 //        wrapper.select("CONVERT(CONCAT_WS('-',age,COUNT(*)) USING utf8)").groupBy("age");
         userDao.selectList(wrapper).forEach(System.out::println);

@@ -1,6 +1,9 @@
 package com.gdut.imis.esclientdemo.config;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
+import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.gdut.imis.esclientdemo.dyna.DynamicDataSource;
@@ -80,6 +83,7 @@ public class MyBatisPlusConfig {
         LazyConnectionDataSourceProxy p=new LazyConnectionDataSourceProxy();
         p.setTargetDataSource(dataSource(master(),slave()));
         sqlSessionFactory.setDataSource(p);
+        sqlSessionFactory.setTypeAliasesPackage("com.gdut.imis.esclientdemo.entity");
         //需要mapper文件并且不在同一个包下时加入扫描，
         sqlSessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath*:mapper/**/*.xml"));
         MybatisConfiguration configuration = new MybatisConfiguration();
@@ -87,10 +91,12 @@ public class MyBatisPlusConfig {
         configuration.setMapUnderscoreToCamelCase(true);
         configuration.setUseGeneratedKeys(true);
         configuration.setCacheEnabled(false);
+
         sqlSessionFactory.setConfiguration(configuration);
 //加入上面的两个拦截器
         Interceptor interceptor[]={paginationInterceptor(),dynamicDataSourceInterceptor()};
         sqlSessionFactory.setPlugins(interceptor);
+        sqlSessionFactory.setGlobalConfig(globalConfig());
         return sqlSessionFactory.getObject();
     }
 
@@ -100,6 +106,18 @@ public class MyBatisPlusConfig {
     @Bean
     public DataSourceTransactionManager transactionManager(DynamicDataSource dataSource) throws Exception {
         return new DataSourceTransactionManager(dataSource);
+    }
+
+    @Bean
+    public GlobalConfig globalConfig(){
+        GlobalConfig globalConfig=new GlobalConfig();
+        globalConfig.setBanner(false);
+        GlobalConfig.DbConfig dbConfig=new GlobalConfig.DbConfig();
+        dbConfig.setIdType(IdType.ID_WORKER);
+//        dbConfig.setTablePrefix("gg");
+        dbConfig.setFieldStrategy(FieldStrategy.NOT_NULL);
+   globalConfig.setDbConfig(dbConfig);
+   return globalConfig;
     }
 
 }

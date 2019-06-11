@@ -34,7 +34,6 @@ public class DynamicDataSourceInterceptor implements Interceptor{
             MappedStatement ms=(MappedStatement)objects[0];
             BoundSql boundSql=ms.getSqlSource().getBoundSql(objects[1]);
             String sql=boundSql.getSql().toLowerCase(Locale.CHINA).replaceAll("[\\t\\n\\r]"," ");
-
             if(ms.getSqlCommandType().equals(SqlCommandType.SELECT)){
                 //如果selectKey为自增id查询主键,使用主库
                 if(ms.getId().contains(SelectKeyGenerator.SELECT_KEY_SUFFIX)){
