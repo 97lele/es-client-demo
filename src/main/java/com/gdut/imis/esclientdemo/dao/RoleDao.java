@@ -11,6 +11,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author lele
  * @since 2019-06-10
  */
-public interface RoleDao extends BaseMapper<Role> {
+public interface RoleDao  {
+
+     void insertRole(Role role);
+
+    Role getRoleById(Long id);
 
 }
